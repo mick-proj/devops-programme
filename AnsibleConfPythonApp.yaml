@@ -1,0 +1,28 @@
+---
+- name: Build, push and run the Docker image for a Python app
+  hosts: localhost
+  vars: 
+      image_name: "miroslavgaydazhiev/mick-proj"
+      image_tag: "0.1"
+      listen_port: 5000
+
+  tasks:
+    - name: Build and push the docker image
+      community.docker.docker_image:
+        name: "{{ image_name }}"
+        tag: "{{ image_tag }}"
+        build:
+          path: .
+        source: build
+        push: true
+
+    - name: Run the Docker container
+      community.docker.docker_container:
+        name: python-app-container
+        image: "{{ image_name }}:{{ image_tag }}"
+        state: started
+        restart_policy: always
+        published_ports: 
+          - "{{ listen_port }}:{{ listen_port }}"
+        env:
+          PORT: "{{ listen_port | string }}"
