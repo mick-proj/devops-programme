@@ -1,0 +1,29 @@
+name: Run Ansible Playbook
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'AnsibleConfPythonApp.yaml'
+
+jobs:
+  ansible:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          ansible-galaxy collection install community.docker
+
+      - name: Run Ansible playbook
+        run: ansible-playbook AnsibleConfPythonApp.yaml
