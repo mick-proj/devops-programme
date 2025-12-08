@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod-declarative
+  labels:
+    app: my-demo
+spec:
+  containers:
+    - name: nginx
+      image: nginx:1.29.3
+      ports:
+        - containerPort: 80
+  restartPolicy: Always
+
+#putting this here for my convenience
+##kubectl get pods -o wide
+#kubectl describe pod my-pod-declarative
+#kubectl logs my-pod-declarative               # view logs
+#kubectl exec -it my-pod-declarative -- /bin/sh  # open shell (if image has sh)
