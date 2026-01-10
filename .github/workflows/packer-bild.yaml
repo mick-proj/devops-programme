@@ -1,0 +1,33 @@
+name: Packer Docker Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  packer-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: "latest"
+
+      - name: Initialize Packer
+        run: packer init docker-ubuntu.pkr.hcl
+
+      - name: Validate Packer template
+        run: packer validate docker-ubuntu.pkr.hcl
+
+      - name: Build Docker image with Packer
+        run: packer build docker-ubuntu.pkr.hcl
+
+      - name: List Docker images
+        run: docker images
