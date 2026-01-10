@@ -21,12 +21,15 @@ jobs:
           version: "latest"
 
       - name: Initialize Packer
+        working-directory: ./packer_tutorial
         run: packer init docker-ubuntu.pkr.hcl
 
       - name: Validate Packer template
+        working-directory: ./packer_tutorial
         run: packer validate docker-ubuntu.pkr.hcl
 
       - name: Build Docker image with Packer
+        working-directory: ./packer_tutorial
         run: packer build docker-ubuntu.pkr.hcl
 
       - name: List Docker images
