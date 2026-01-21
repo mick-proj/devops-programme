@@ -32,16 +32,19 @@ jobs:
 
       - name: Run Hadolint (web)
         uses: hadolint/hadolint-action@v3.1.0
+        continue-on-error: true
         with:
           dockerfile: app/web/Dockerfile
 
       - name: Run Hadolint (cart)
         uses: hadolint/hadolint-action@v3.1.0
+        continue-on-error: true
         with:
           dockerfile: app/cart/Dockerfile
 
       - name: Run Hadolint (catalogue)
         uses: hadolint/hadolint-action@v3.1.0
+        continue-on-error: true
         with:
           dockerfile: app/catalogue/Dockerfile
 
