@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: ghcr.io/mick-proj/devops-programme/web:PLACEHOLDER
+          image: ghcr.io/mick-proj/devops-programme/web:7f3cbd056674e9921d306715948b7a49ac3f149b
           ports:
             - containerPort: 8080
           resources:
