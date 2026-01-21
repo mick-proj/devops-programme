@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: cart
-          image: ghcr.io/mick-proj/devops-programme/cart:f7f12343be4a294163444174226e799bcd17dca8
+          image: ghcr.io/mick-proj/devops-programme/cart:76b110ac950a809321024cb8fa02085c59173b1e
           ports:
             - containerPort: 8080
 
