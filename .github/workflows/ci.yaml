@@ -3,6 +3,8 @@ name: CI - Build, Scan, Push & GitOps Update
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - "infrastructure/**"
 
 env:
   REGISTRY: ghcr.io
