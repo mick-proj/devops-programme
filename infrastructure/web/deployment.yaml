@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: ghcr.io/mick-proj/devops-programme/web:76b110ac950a809321024cb8fa02085c59173b1e
+          image: ghcr.io/mick-proj/devops-programme/web:c2a3dbea64081e2d8d862f31541fff14f378eaca
           ports:
             - containerPort: 8080
           resources:
