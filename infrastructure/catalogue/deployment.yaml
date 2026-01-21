@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: catalogue
-          image: ghcr.io/mick-proj/devops-programme/catalogue:7f3cbd056674e9921d306715948b7a49ac3f149b
+          image: ghcr.io/mick-proj/devops-programme/catalogue:2bd6ac80582fa882caf57cfef0815214603cc522
           ports:
             - containerPort: 8080
 
