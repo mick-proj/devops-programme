@@ -4,7 +4,7 @@ metadata:
   name: catalogue
   namespace: robot-shop
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: catalogue
