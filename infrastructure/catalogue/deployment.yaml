@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: catalogue
   namespace: robot-shop
+  labels:
+    app: catalogue
+    prometheus: scrape
 spec:
   replicas: 2
   selector:

@@ -3,6 +3,9 @@ kind: Service
 metadata:
   name: catalogue
   namespace: robot-shop
+  labels:
+    app: catalogue
+    prometheus: scrape
 spec:
   selector:
     app: catalogue

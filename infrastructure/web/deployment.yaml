@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: web
   namespace: robot-shop
+  labels:
+    app: web
+    prometheus: scrape
 spec:
   replicas: 3
   selector:
