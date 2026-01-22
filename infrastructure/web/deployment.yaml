@@ -20,6 +20,15 @@ spec:
           image: ghcr.io/mick-proj/devops-programme/web:82283aa3603f05583e7372c79088b975911bc830
           ports:
             - containerPort: 8080
+          env:
+            - name: USER_HOST
+              value: "localhost"
+            - name: SHIPPING_HOST
+              value: "localhost"
+            - name: PAYMENT_HOST
+              value: "localhost"
+            - name: RATINGS_HOST
+              value: "localhost"
           resources:
             requests:
               cpu: "100m"
