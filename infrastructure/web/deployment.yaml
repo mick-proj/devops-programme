@@ -3,9 +3,6 @@ kind: Deployment
 metadata:
   name: web
   namespace: robot-shop
-  labels:
-    app: web
-    prometheus: scrape
 spec:
   replicas: 3
   selector:
@@ -15,6 +12,7 @@ spec:
     metadata:
       labels:
         app: web
+        prometheus: scrape
     spec:
       imagePullSecrets:
         - name: ghcr-secret
