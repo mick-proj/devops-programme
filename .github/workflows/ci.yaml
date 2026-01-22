@@ -3,9 +3,8 @@ name: CI - Build, Scan, Push & GitOps Update
 on:
   push:
     branches: [ "main" ]
-    paths-ignore:
-      - "infrastructure/**"
-
+    paths:
+      - "app/**"
 env:
   REGISTRY: ghcr.io
   IMAGE_REPO: mick-proj/devops-programme
