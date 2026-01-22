@@ -13,6 +13,8 @@ spec:
       labels:
         app: cart
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: cart
           image: ghcr.io/mick-proj/devops-programme/cart:82283aa3603f05583e7372c79088b975911bc830
