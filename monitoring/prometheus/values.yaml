@@ -1,10 +1,22 @@
 server:
-  extraScrapeConfigs:
-    - job_name: kubernetes-pods
-      kubernetes_sd_configs:
-        - role: pod
-      relabel_configs:
-        - source_labels: [__meta_kubernetes_pod_label_prometheus]
-          action: keep
-          regex: scrape
+  global:
+    scrape_interval: 15s
+    evaluation_interval: 15s
 
+kube-state-metrics:
+  enabled: true
+
+nodeExporter:
+  enabled: true
+
+kubelet:
+  enabled: true
+
+kubeControllerManager:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+alertmanager:
+  enabled: true
