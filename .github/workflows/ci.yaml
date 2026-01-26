@@ -5,65 +5,49 @@ on:
     branches: [ "main" ]
     paths:
       - "app/**"
+
 env:
   REGISTRY: ghcr.io
   IMAGE_REPO: mick-proj/devops-programme
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        service: [web, cart, catalogue]
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Set full git SHA
-        id: vars
-        run: echo "SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # Single GHCR login for the whole job
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: miroslav.gaydazhiev@gmail.com
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Run Hadolint (web)
+      # Matrixed Hadolint & build/push
+      - name: Run Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         continue-on-error: true
         with:
-          dockerfile: app/web/Dockerfile
+          dockerfile: app/${{ matrix.service }}/Dockerfile
 
-      - name: Run Hadolint (cart)
-        uses: hadolint/hadolint-action@v3.1.0
-        continue-on-error: true
-        with:
-          dockerfile: app/cart/Dockerfile
-
-      - name: Run Hadolint (catalogue)
-        uses: hadolint/hadolint-action@v3.1.0
-        continue-on-error: true
-        with:
-          dockerfile: app/catalogue/Dockerfile
-
-      - name: Build & push web image
+      - name: Build & push Docker image
         run: |
-          docker build -t $REGISTRY/$IMAGE_REPO/web:${{ env.SHA }} app/web
-          docker push $REGISTRY/$IMAGE_REPO/web:${{ env.SHA }}
+          docker build -t $REGISTRY/$IMAGE_REPO/${{ matrix.service }}:${{ github.sha }} app/${{ matrix.service }}
+          docker push $REGISTRY/$IMAGE_REPO/${{ matrix.service }}:${{ github.sha }}
 
-      - name: Build & push cart image
-        run: |
-          docker build -t $REGISTRY/$IMAGE_REPO/cart:${{ env.SHA }} app/cart
-          docker push $REGISTRY/$IMAGE_REPO/cart:${{ env.SHA }}
-
-      - name: Build & push catalogue image
-        run: |
-          docker build -t $REGISTRY/$IMAGE_REPO/catalogue:${{ env.SHA }} app/catalogue
-          docker push $REGISTRY/$IMAGE_REPO/catalogue:${{ env.SHA }}
-
+  gitops-update:
+    runs-on: ubuntu-22.04
+    needs: build-and-push
+    steps:
       - name: Checkout GitOps repo
         uses: actions/checkout@v4
         with:
@@ -72,9 +56,9 @@ jobs:
 
       - name: Update image tags in GitOps repo
         run: |
-          sed -i "s|image: .*web:.*|image: $REGISTRY/$IMAGE_REPO/web:${{ env.SHA }}|" gitops/infrastructure/web/deployment.yaml
-          sed -i "s|image: .*cart:.*|image: $REGISTRY/$IMAGE_REPO/cart:${{ env.SHA }}|" gitops/infrastructure/cart/deployment.yaml
-          sed -i "s|image: .*catalogue:.*|image: $REGISTRY/$IMAGE_REPO/catalogue:${{ env.SHA }}|" gitops/infrastructure/catalogue/deployment.yaml
+          for service in web cart catalogue; do
+            sed -i "s|image: .*${service}:.*|image: $REGISTRY/$IMAGE_REPO/${service}:${{ github.sha }}|" gitops/infrastructure/${service}/deployment.yaml
+          done
 
       - name: Commit & push GitOps update
         run: |
@@ -82,5 +66,5 @@ jobs:
           git config user.name "ci-bot"
           git config user.email "ci@github.com"
           git add .
-          git commit -m "Update images to SHA ${{ env.SHA }}"
+          git commit -m "Update images to SHA ${{ github.sha }}" || echo "No changes"
           git push
