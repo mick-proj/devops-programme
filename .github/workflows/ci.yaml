@@ -65,7 +65,7 @@ jobs:
           cd gitops
           git config user.name "ci-bot"
           git config user.email "ci@github.com"
+          git pull --rebase origin main 
           git add .
           git commit -m "Update images to SHA ${{ github.sha }}" || echo "No changes"
-          git pull --rebase origin main 
           git push
