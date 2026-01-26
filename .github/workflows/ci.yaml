@@ -54,10 +54,18 @@ jobs:
           token: ${{ secrets.CD_REPO_TOKEN }}
           path: gitops
 
+      - name: Pull latest changes
+        run: |
+          cd gitops
+          git pull --rebase origin main
+
+      - name: Setup yq
+        uses: mikefarah/yq@v4
+
       - name: Update image tags in GitOps repo
         run: |
           for service in web cart catalogue; do
-            sed -i "s|image: .*${service}:.*|image: $REGISTRY/$IMAGE_REPO/${service}:${{ github.sha }}|" gitops/infrastructure/${service}/deployment.yaml
+            yq eval ".spec.template.spec.containers[0].image = \"$REGISTRY/$IMAGE_REPO/${service}:${{ github.sha }}\"" -i gitops/infrastructure/${service}/deployment.yaml
           done
 
       - name: Commit & push GitOps update
@@ -65,7 +73,6 @@ jobs:
           cd gitops
           git config user.name "ci-bot"
           git config user.email "ci@github.com"
-          git pull --rebase origin main 
           git add .
           git commit -m "Update images to SHA ${{ github.sha }}" || echo "No changes"
           git push
