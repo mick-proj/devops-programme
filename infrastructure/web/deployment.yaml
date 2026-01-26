@@ -18,7 +18,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: web
-          image: ghcr.io/mick-proj/devops-programme/web:42b00d8b2beb0974b959649c20d28737b0469e7c
+          image: ghcr.io/mick-proj/devops-programme/web:566bacf7d9042a464d8a9021fea9d086deb51ca1
           ports:
             - containerPort: 8080
           env:
@@ -37,4 +37,3 @@ spec:
             limits:
               cpu: "500m"
               memory: "256Mi"
-
