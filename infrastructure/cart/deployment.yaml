@@ -18,6 +18,6 @@ spec:
         - name: ghcr-secret
       containers:
         - name: cart
-          image: ghcr.io/mick-proj/devops-programme/cart:bcfbb5d3b9e90eb35332e797fbf28b3c71bc464e
+          image: ghcr.io/mick-proj/devops-programme/cart:3599c7514a0dbcb82aa91a913432092114ccf4c7
           ports:
             - containerPort: 8080
