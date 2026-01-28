@@ -18,6 +18,6 @@ spec:
         - name: ghcr-secret
       containers:
         - name: catalogue
-          image: ghcr.io/mick-proj/devops-programme/catalogue:3599c7514a0dbcb82aa91a913432092114ccf4c7
+          image: ghcr.io/mick-proj/devops-programme/catalogue:67e032b298301701882209f7ec2dc767ca0a0862
           ports:
             - containerPort: 8080
